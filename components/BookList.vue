@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-wrap items-center">
+  <div class="grid grid-cols-1 mt-20">
     <template v-if="books.length > 0">
       <Book
         v-for="(book, index) in books"
@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { fetchBooks } from '@/apis/bookApi';
+import { fetchBooks } from '@/apis/fetchBooks';
 import { useBookStore } from '@/stores/bookStore';
 
 interface Book {
@@ -53,13 +53,13 @@ function closeModal() {
 }
 
 async function handleSave() {
-  const userId = 123; // Aquí pondrías el ID del usuario que obtendrás de algún otro lado
+  const userId = 123; // UserId from fetch
   await bookStore.associateBookWithUser(userId);
   closeModal();
 }
 </script>
 
 <style scoped>
-/* Agrega cualquier estilo necesario aquí */
+
 </style>
 

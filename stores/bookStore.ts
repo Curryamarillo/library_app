@@ -1,6 +1,6 @@
 // stores/bookStore.ts
 import { defineStore } from 'pinia';
-import { associateBookWithUser } from '@/apis/bookApi';
+import { associateBookWithUser } from '@/apis/associateBookUser';
 
 interface Book {
   id: number;
