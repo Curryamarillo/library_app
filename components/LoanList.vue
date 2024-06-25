@@ -16,36 +16,19 @@
 import { fetchLoans } from '@/apis/fetchLoans';
 import { fetchUserById } from '@/apis/fetchUsers';
 import { fetchBookById } from '@/apis/fetchBooks';
+import { type ILoan } from '~/types/ILoan';
 
-interface Loan {
-  id: number;
-  bookId: number;
-  userId: number;
-  loanDate: Date | number[];
-  returnDate: Date | null;
-  book: {
-    id: number;
-    title: string;
-    author: string;
-    isbn: string;
-    isAvailable: boolean;
-  };
-  user: {
-    id: number;
-    name: string;
-    surname: string;
-  };
-}
 
-const loans = ref<Loan[]>([]);
-const isReturnModalOpen = ref(false);
-const selectedLoanId = ref<number | null>(null);
+
+const loans:Ref<ILoan[]> = ref<ILoan[]>([]);
+const isReturnModalOpen:Ref<boolean> = ref(false);
+const selectedLoanId:Ref<number | null> = ref<number | null>(null);
 
 onMounted(async () => {
   try {
     const loansData = await fetchLoans();
     loans.value = await Promise.all(
-      loansData.map(async (loan: Loan) => {
+      loansData.map(async (loan: ILoan) => {
         const book = await fetchBookById(loan.bookId);
         const user = await fetchUserById(loan.userId);
         return {

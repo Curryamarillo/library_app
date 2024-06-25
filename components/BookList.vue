@@ -19,17 +19,12 @@
 <script setup lang="ts">
 import { fetchBooks } from '@/apis/fetchBooks';
 import { useBookStore } from '@/stores/bookStore';
+import { type IBook } from '~/types/IBooks';
 
-interface Book {
-  title: string;
-  author: string;
-  isbn: string;
-  isAvailable: boolean;
-}
 
-const books = ref<Book[]>([]);
-const isModalOpen = ref(false);
-const bookStore = useBookStore();
+let books:Ref<IBook[]> = ref<IBook[]>([]);
+let isModalOpen:Ref<boolean> = ref(false);
+let bookStore = useBookStore();
 
 const loadBooks = async () => {
   try {
@@ -53,7 +48,8 @@ function closeModal() {
 }
 
 async function handleSave() {
-  const userId = 123; // UserId from fetch
+  // TODO At UserStore match Loan with UserId and BookId
+  const userId = 123; 
   await bookStore.associateBookWithUser(userId);
   closeModal();
 }

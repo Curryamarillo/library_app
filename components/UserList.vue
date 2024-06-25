@@ -3,7 +3,7 @@
       <template v-if="users.length > 0">
         <User 
           v-for="(user, index) in users" 
-          :key="user.id" 
+          :key="index" 
           :id="user.id" 
           :name="user.name" 
           :surname="user.surname" 
@@ -18,19 +18,13 @@
   <script setup lang="ts">
   import { ref, onMounted } from 'vue';
   import { fetchUsers } from '~/apis/fetchUsers';
+  import { type IUser } from '~/types/IUser';
+
   
-  interface User {
-      id: number;
-      name: string;
-      surname: string;
-      email: string;
-      isAdmin: boolean;
-  }
-  
-  const users = ref<User[]>([]);
-  const isEditFormOpen = ref(false);
-  const page = ref(1); // Página inicial
-  const perPage = 10; // Número de usuarios por página
+  const users:Ref<IUser[]> = ref<IUser[]>([]);
+  const isEditFormOpen:Ref<boolean> = ref(false);
+  const page:Ref<number> = ref(1); // Página inicial
+  const perPage:number = 10; // Número de usuarios por página
   const totalItems = ref(0); // Número total de usuarios disponibles (puedes ajustar esto según tu API)
   
   const loadUsers = async () => {

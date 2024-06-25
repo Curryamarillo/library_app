@@ -8,28 +8,19 @@
     </div>
   </template>
   
-  <script lang="ts">
-  import { defineComponent } from 'vue';
-  
-  export default defineComponent({
-    name: 'BookModal',
-    props: {
-      show: {
-        type: Boolean,
-        required: true
-      }
-    },
-    emits: ['close', 'save'],
-    methods: {
-      close() {
-        this.$emit('close');
-      },
-      save() {
-        this.$emit('save');
-      }
-    }
-  });
-  </script>
+  <script setup lang="ts">
+
+ const props = defineProps({
+  show: {
+    type: Boolean,
+    required: true
+  }
+ });
+
+ const emit = defineEmits(['close', 'save']);
+
+ const close = () => emit('close');
+ const save = () => emit('save');  </script>
   
   <style scoped>
 

@@ -8,50 +8,20 @@
         <p class="text-gray-500">Fecha de préstamo: {{ formatDate(loan.loanDate) }}</p>
         <button class="bg-green-500 text-white px-4 py-1 mt-2 rounded-lg hover:bg-green-700 shadow-lg"
           @click="$emit('return')">
-          Devolver
+          Prestar
         </button>
       </div>
     </div>
   </template>
   
   <script setup lang="ts">
-  
-  interface Loan {
-    id: number;
-    bookId: number;
-    userId: number;
-    loanDate: Date | number[];
-    returnDate: Date | null;
-    book: {
-      id: number;
-      title: string;
-      author: string;
-      isbn: string;
-      isAvailable: boolean;
-    };
-    user: {
-      id: number;
-      name: string;
-      surname: string;
-    };
-  }
-  
+  import { type ILoan } from '~/types/ILoan';
+  import { formatDate } from '~/utils/formatDate';
   const props = defineProps<{
-    loan: Loan;
+    loan: ILoan;
   }>();
   
-  // Función para formatear la fecha
-  function formatDate(loanDate: Date | number[]) {
-    if (Array.isArray(loanDate)) {
-      const [year, month, day, hours, minutes, seconds] = loanDate;
-      if (seconds === 0) {
-        return `${day}/${month}/${year}, ${hours}:${minutes}`;
-      } else {
-        return `${day}/${month}/${year}, ${hours}:${minutes}:${seconds}`;
-      }
-    }
-    return (loanDate as Date).toLocaleString(); // Si es Date, usar el formato local por defecto
-  }
+  
   </script>
   
 
