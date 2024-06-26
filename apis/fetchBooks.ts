@@ -32,6 +32,33 @@ export const fetchBooks = async () => {
       throw error;
     }
   };
+  export const fetchBooksByTitle = async (bookName: string) => {
+    try {
+      const response = await fetch(`${API_URL_BOOKS}/${bookName}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const books = await response.json();
+    } catch (error) {
+      console.error('Error fetching books by title:', error);
+    }
+  };
+
+  export const fetchBooksByTitleContaining = async (bookName: string) => {
+    try {
+      console.log(`Fetching books by title containing "${bookName}"...`);
+      const response = await fetch(`${API_URL_BOOKS}/title/v2/${bookName}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log(`Books fetched by title "${bookName}":`, data);
+      return data;
+    } catch (error) {
+      console.error(`Error fetching books by title containing "${bookName}":`, error);
+      throw error;
+    }
+  };
 
   
   
