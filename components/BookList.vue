@@ -15,7 +15,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
 import { fetchBooks, fetchBooksByTitleContaining, persistBookInDatabase } from '@/apis/fetchBooks';
 import { useBookStore } from '@/stores/bookStore';
 import { type IBook } from '~/types/IBooks';
@@ -78,18 +77,13 @@ async function handleLoan() {
 
 async function handleSaveBook(newBook: IBook) {
   try {
-    console.log('Sending book data:', newBook);
     await persistBookInDatabase(newBook);
     books.value = await fetchBooks()
-    closeForm();
   } catch (error) {
     console.error('Error persisting book in database:', error);
-    // Handle the error here (e.g., display an error message)
   }
 }
 
 </script>
 
-<style scoped>
-/* Your styles here */
-</style>
+<style scoped></style>
