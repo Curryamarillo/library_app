@@ -1,6 +1,6 @@
 <template>
   <input
-    class="p-2 m-4 border rounded shadow-lg focus:outline-none focus:border-green-500 bg-white text-gray-700 placeholder-gray-400"
+    class="p-1 m-4 border rounded shadow-lg focus:outline-none focus:border-green-500 bg-white text-gray-700 placeholder-gray-400"
     :class="{ 'border-gray-300': !isActive, 'border-green-500': isActive }"
     :value="searchTerm"
     placeholder="Buscar libro por nombre"
