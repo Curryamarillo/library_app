@@ -80,7 +80,7 @@
   
   const close = () => emit('close');
   
-  // Llenar los campos del formulario con los datos del libro al iniciar la edición
+
   if (props.book) {
     formData.value.title = props.book.title;
     formData.value.author = props.book.author;

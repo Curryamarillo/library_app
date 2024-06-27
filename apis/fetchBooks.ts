@@ -83,8 +83,6 @@ export const persistBookInDatabase = async (newBook: IBook) => {
     throw error; 
   }
 };
-<<<<<<< HEAD
-
 export const updateBook = async (bookId: number, updatedBook: IBook) => {
   try {
     const response = await fetch(`${API_URL_BOOKS}/${bookId}`, {
@@ -106,5 +104,3 @@ export const updateBook = async (bookId: number, updatedBook: IBook) => {
     throw error;
   }
 };
-=======
->>>>>>> ff47645aca8a566fa4ba196f2f99ba49f1a5ab08

@@ -5,21 +5,31 @@
       <div v-if="isSaved" class="mb-4 text-green-500 font-bold">¡Libro guardado correctamente!</div>
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="title">Título</label>
-        <input id="title" type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Título" v-model="title" :disabled="isSaved" :class="{ 'bg-gray-100': isSaved }">
+        <input id="title" type="text"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          placeholder="Título" v-model="title" :disabled="isSaved" :class="{ 'bg-gray-100': isSaved }">
       </div>
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="author">Autor</label>
-        <input id="author" type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Autor" v-model="author" :disabled="isSaved" :class="{ 'bg-gray-100': isSaved }">
+        <input id="author" type="text"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          placeholder="Autor" v-model="author" :disabled="isSaved" :class="{ 'bg-gray-100': isSaved }">
       </div>
       <div class="mb-6">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="isbn">ISBN</label>
-        <input id="isbn" type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="ISBN" v-model="isbn" :disabled="isSaved" :class="{ 'bg-gray-100': isSaved }">
+        <input id="isbn" type="text"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          placeholder="ISBN" v-model="isbn" :disabled="isSaved" :class="{ 'bg-gray-100': isSaved }">
       </div>
       <div class="flex items-center justify-between">
-        <button :disabled="isSaved" @click="save" :class="[isSaved ? 'bg-gray-500 cursor-not-allowed' : 'bg-green-500 hover:bg-green-700', 'text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline']" type="button">
+        <button :disabled="isSaved" @click="save"
+          :class="[isSaved ? 'bg-gray-500 cursor-not-allowed' : 'bg-green-500 hover:bg-green-700', 'text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline']"
+          type="button">
           Guardar
         </button>
-        <button @click="close" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+        <button @click="close"
+          class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          type="button">
           Salir
         </button>
       </div>
@@ -64,5 +74,4 @@ watch(() => props.show, (newValue) => {
 });
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
