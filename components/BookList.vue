@@ -5,28 +5,35 @@
     </button>
     <BookSearch v-model:search-term="searchTerm" />
     <template v-if="books.length > 0">
-      <Book v-for="(book, index) in books" :key="index" :title="book.title" :author="book.author" :isbn="book.isbn"
-        :isAvailable="book.isAvailable" @open-modal="openModal" @open-edit="openEditForm(book)" />
+      <Book
+        v-for="(book, index) in books"
+        :key="index"
+        :id="book.id"
+        :title="book.title"
+        :author="book.author"
+        :isbn="book.isbn"
+        :isAvailable="book.isAvailable"
+        @open-modal="openModal"
+        @open-edit="openEditForm(book)"
+      />
     </template>
     <div v-else class="animate-ping">Cargando libros...</div>
     <BookModal :show="isModalOpen" @close="closeModal" @save="" />
     <BookForm :show="isFormOpen" @close="closeForm" @save="handleSaveBook" />
-    <BookEditForm :show="isEditFormOpen" :book="selectedBook" @close="closeEditForm" @save="handleEditSaveBook" />
-
+    <BookEditForm :show="isEditFormOpen" :book="selectedBook" @close="closeEditForm" @save="updatedBook" />
   </div>
-  <BookForm :show="isFormOpen" @close="closeForm" @save="handleSaveBook" />
+
 </template>
 
 <script setup lang="ts">
 import { fetchBooks, fetchBooksByTitleContaining, updateBook, persistBookInDatabase } from '@/apis/fetchBooks';
-import { useBookStore } from '@/stores/bookStore';
-import { type IBook } from '~/types/IBooks'; // Ajusta la importación según la estructura de tu proyecto
+import { type IBook } from '~/types/IBooks';
 
-const books = ref<IBook[]>([]);
+const books:Ref<IBook[]> = ref<IBook[]>([]);
 const isModalOpen = ref(false);
 const isEditFormOpen = ref(false);
 const selectedBook = ref<IBook | null>(null);
-const bookStore = useBookStore();
+
 const searchTerm = ref('');
 const isFormOpen = ref(false);
 
@@ -54,18 +61,11 @@ const openForm = () => {
   isFormOpen.value = true;
 };
 
-
-watch(searchTerm, async (newValue) => {
-  await searchBooks(newValue);
-});
-
-function closeForm() {
+const closeForm = () => {
   isFormOpen.value = false;
-}
+};
 
-
-
-function openModal() {
+const openModal = () => {
   isModalOpen.value = true;
 };
 
@@ -94,19 +94,28 @@ const handleSaveBook = async (newBook: IBook) => {
   }
 };
 
-const handleEditSaveBook = async (bookId: number, updatedBook: IBook) => {
+
+onMounted(loadBooks);
+
+watch(searchTerm, async (newValue) => {
+  await searchBooks(newValue);
+});
+
+const updatedBook = async (updatedBook: IBook) => {
   try {
-    await updateBook(bookId, updatedBook);
-    isEditFormOpen.value = false;
-    await loadBooks();
+    await updateBook(updatedBook.id, updatedBook); // Pasa el libro completo
+    closeEditForm(); // Cierra el formulario de edición después de actualizar
+    await loadBooks(); // Vuelve a cargar la lista de libros después de la actualización
   } catch (error) {
     console.error('Error updating book:', error);
+    // Puedes manejar errores aquí, por ejemplo, mostrando un mensaje al usuario
   }
 };
 
-onMounted(loadBooks);
+
 </script>
 
 <style scoped>
 /* Estilos específicos del componente BookList.vue */
 </style>
+

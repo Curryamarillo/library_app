@@ -38,8 +38,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-
 const props = defineProps({
   show: {
     type: Boolean,
@@ -66,6 +64,7 @@ const save = () => {
 
 watch(() => props.show, (newValue) => {
   if (!newValue) {
+    // Reset form and isSaved when form is closed
     title.value = '';
     author.value = '';
     isbn.value = '';
