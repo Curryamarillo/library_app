@@ -11,21 +11,24 @@
         :name="user.name" 
         :surname="user.surname"
         :email="user.email" 
-        :is-admin="user.isAdmin" 
+        :is-admin="user.isAdmin"
+        @edit-user-form="openEditForm(user)" 
       />
     </template>
     <UserForm :show="isFormOpen" @close="closeForm" @save="handleSaveUser"/>
+    <UserEditForm :show="isEditFormOpen" :user="selectedUser" @close="closeEditForm" @save="updatedUser"/>
   </div>
 </template>
 
 <script setup lang="ts">
-import { fetchUsers } from '~/apis/fetchUsers';
+import { fetchUsers, persistUserInDatabase, updateUser } from '~/apis/fetchUsers';
 import { type IUser } from '~/types/IUser';
 import { ref, onMounted } from 'vue';
 
 const users = ref<IUser[]>([]);
 const selectedUser = ref<IUser | null>(null);
 const isFormOpen = ref(false);
+const isEditFormOpen = ref(false);
 
 const openForm = () => {
   isFormOpen.value = true;
@@ -33,6 +36,13 @@ const openForm = () => {
 const closeForm = () => {
   isFormOpen.value = false;
 }
+const openEditForm = (user: IUser) => {
+  selectedUser.value = user;
+  isEditFormOpen.value = true
+}
+const closeEditForm = () => {
+  selectedUser.value = null;
+  isEditFormOpen.value = false}
 
 const loadUsers = async () => {
   try {
@@ -42,13 +52,25 @@ const loadUsers = async () => {
     console.error('Error loading users:', error);
   }
 };
-
+const updatedUser = async (updatedUser: IUser) => {
+  try {
+    await updateUser(updatedUser.id, updatedUser);
+    await loadUsers();
+  } catch (error) {
+    console.error('Error updating user:', error)
+  }
+}
 onMounted(() => {
   loadUsers();
 });
 
 const handleSaveUser = async (newUser: IUser) => {
-  //todo
+  try {
+    await persistUserInDatabase(newUser);
+    await loadUsers();
+  } catch (error) {
+    console.error('Error saving user:', error)
+  }
 }
 </script>
 
