@@ -67,3 +67,19 @@ export const updateUser = async (userId: number, updatedUser: IUser) => {
     throw error;
   }
 }
+export const deleteUserById = async (userId: number): Promise<void> => {
+  try {
+    const response = await fetch(`${API_URL_USERS}/${userId}`, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to delete user');
+    }
+  } catch (error) {
+    console.error(`Error deleting user with id ${userId}:`, error);
+    throw new Error('Ocurrió un error al intentar eliminar el usuario.');
+  }
+};
+
+

@@ -5,24 +5,24 @@
             <div v-if="user">
                 <div v-if="isSaved" class="mb-4 text-green-500 font-bold">¡Usuario guardado correctamente!</div>
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="name">Nombre</label>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="name">Nombre: {{ user.name }}</label>
                     <input id="name" type="text"
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        placeholder="Nombre" v-model="formData.name" :disabled="isSaved"
+                        placeholder="Editar nombre" v-model="formData.name" :disabled="isSaved"
                         :class="{ 'bg-gray-100': isSaved }">
                 </div>
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="surname">Apellido</label>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="surname">Apellido: {{ user.surname }}</label>
                     <input id="surname" type="text"
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        placeholder="Apellido" v-model="formData.surname" :disabled="isSaved"
+                        placeholder="Editar apellido" v-model="formData.surname" :disabled="isSaved"
                         :class="{ 'bg-gray-100': isSaved }">
                 </div>
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Email</label>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Email: {{ user.email }}</label>
                     <input id="email" type="email"
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        placeholder="Email" v-model="formData.email" :disabled="isSaved"
+                        placeholder="Editar email" v-model="formData.email" :disabled="isSaved"
                         :class="{ 'bg-gray-100': isSaved }">
                 </div>
                 <div class="mb-4">
@@ -33,8 +33,7 @@
                         :class="{ 'bg-gray-100': isSaved }">
                 </div>
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="confirmPassword">Confirmar
-                        Contraseña</label>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="confirmPassword">Confirmar Contraseña</label>
                     <input id="confirmPassword" type="password"
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         placeholder="Confirmar Contraseña" v-model="formData.confirmPassword" :disabled="isSaved"
@@ -64,6 +63,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref, watch } from 'vue';
 import { type IUser } from '~/types/IUser';
 
 const props = defineProps({
@@ -113,9 +113,9 @@ const close = () => emit('close');
 
 watch(() => props.show, (newValue) => {
     if (newValue && props.user) {
-        formData.value.name = props.user.name;
-        formData.value.surname = props.user.surname;
-        formData.value.email = props.user.email;
+        formData.value.name = '';
+        formData.value.surname = '';
+        formData.value.email = '';
         formData.value.password = '';
         formData.value.confirmPassword = '';
         formData.value.isAdmin = props.user.isAdmin;

@@ -5,7 +5,7 @@
             <div v-if="isSaved" class="mb-4 text-green-500 font-bold">¡Usuario guardado correctamente!</div>
             <div>
                 <div class="mb-2">
-                    <label class="block text-gray-700 text-sm font-bold mt-2 mb-2" for="username">Nombre</label>
+                    <label class="block text-gray-700 text-sm font-bold mt-2 mb-2" for="name">Nombre</label>
                     <input id="name" type="text"
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         placeholder="Nombre" v-model="formData.name" :disabled="isSaved" :class="{ 'bg-gray-100': isSaved }">
@@ -113,3 +113,4 @@ watch(() => props.show, (newValue) => {
 </script>
 
 <style scoped></style>
+

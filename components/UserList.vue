@@ -12,23 +12,26 @@
         :surname="user.surname"
         :email="user.email" 
         :is-admin="user.isAdmin"
-        @edit-user-form="openEditForm(user)" 
+        @edit-user-form="openEditForm(user)"
+        @delete-user-form="openDeleteUserForm(user)" 
       />
     </template>
     <UserForm :show="isFormOpen" @close="closeForm" @save="handleSaveUser"/>
     <UserEditForm :show="isEditFormOpen" :user="selectedUser" @close="closeEditForm" @save="updatedUser"/>
+    <UserDeleteForm v-if="selectedUser"  :show="isUserDeleteFormOpen" :user="selectedUser"@close="closeDeleteUserForm" @delete="deleteUser" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { fetchUsers, persistUserInDatabase, updateUser } from '~/apis/fetchUsers';
+import { fetchUsers, persistUserInDatabase, updateUser, deleteUserById } from '~/apis/fetchUsers';
 import { type IUser } from '~/types/IUser';
-import { ref, onMounted } from 'vue';
+
 
 const users = ref<IUser[]>([]);
 const selectedUser = ref<IUser | null>(null);
 const isFormOpen = ref(false);
 const isEditFormOpen = ref(false);
+const isUserDeleteFormOpen = ref(false);
 
 const openForm = () => {
   isFormOpen.value = true;
@@ -44,9 +47,18 @@ const closeEditForm = () => {
   selectedUser.value = null;
   isEditFormOpen.value = false}
 
+const openDeleteUserForm = (user: IUser) => {
+  selectedUser.value = user;
+  isUserDeleteFormOpen.value = true;
+}
+const closeDeleteUserForm = () => {
+  selectedUser.value = null;
+  isUserDeleteFormOpen.value = false;
+}
+
 const loadUsers = async () => {
   try {
-    const allUsers = await fetchUsers(); // Ajusta esto según tu API para obtener todos los usuarios
+    const allUsers = await fetchUsers(); 
     users.value = allUsers;
   } catch (error) {
     console.error('Error loading users:', error);
@@ -72,6 +84,27 @@ const handleSaveUser = async (newUser: IUser) => {
     console.error('Error saving user:', error)
   }
 }
+const deleteUser = async () => {
+  try {
+    if (!selectedUser.value) {
+      throw new Error('No user selected');
+    }
+
+    await deleteUserById(selectedUser.value.id); // Aquí llama a la función para eliminar el usuario
+    await loadUsers();
+    closeDeleteUserForm();
+  } catch (error) {
+    // Manejo específico para la restricción de clave foránea
+    if (error instanceof Error && error.message.includes('no se puede eliminar')) {
+      alert('El usuario no puede ser borrado porque tiene libros en su poder.');
+    } else {
+      console.error('Error deleting user:', error);
+      alert('Ocurrió un error al intentar eliminar el usuario.');
+    }
+  }
+};
+
+
 </script>
 
 <style scoped>
