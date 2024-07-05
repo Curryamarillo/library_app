@@ -1,9 +1,11 @@
 <template>
-  <div class="grid grid-cols-1 mt-20">
-    <button class="p-2 my-2 mx-4 bg-green-500 text-white rounded shadow-lg hover:bg-green-700" @click="openForm">
+  <div class="relative grid sm:grid-cols-2 mt-20 grid-cols-1">
+    <button class="p-2 sm:p-1 my-2 mx-2 sm:mx-4 bg-green-500 text-white rounded shadow-lg hover:bg-green-700" @click="openForm">
       Agregar Libro
     </button>
     <BookSearch v-model:search-term="searchTerm" />
+  </div>
+    <div class="grid grid-cols-1 mt-6">
     <template v-if="books.length > 0">
       <Book
         v-for="(book, index) in books"

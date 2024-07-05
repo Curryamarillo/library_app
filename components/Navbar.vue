@@ -1,6 +1,6 @@
 <template>
-    <div class="mt-3">
-        <nav class="rounded-md my-2 ml-2 mr-10 p-1 bg-green-800 fixed top-0 w-full z-50">
+    <div class="mt-0">
+        <nav class="rounded-md my-2 ml-2 mr-10 p-1 bg-green-800 fixed top-0 w-screen z-50">
             <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
                 <div class="relative flex h-16 items-center justify-between">
                     <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
