@@ -1,17 +1,10 @@
 // stores/bookStore.ts
 import { defineStore } from 'pinia';
 import { associateBookWithUser } from '@/apis/associateBookUser';
-
-interface Book {
-  id: number;
-  title: string;
-  author: string;
-  isbn: string;
-  isAvailable: boolean;
-}
+import { type IBook } from '~/types/IBooks';
 
 interface BookStoreState {
-  selectedBook: Book | null;
+  selectedBook: IBook | null;
 }
 
 export const useBookStore = defineStore('bookStore', {
@@ -19,7 +12,7 @@ export const useBookStore = defineStore('bookStore', {
     selectedBook: null
   }),
   actions: {
-    selectBook(book: Book) {
+    selectBook(book: IBook) {
       this.selectedBook = book;
     },
     async associateBookWithUser(userId: number) {
@@ -33,7 +26,7 @@ export const useBookStore = defineStore('bookStore', {
         }
       }
     },
-    updateSelectedBook(updatedBook: Book) {
+    updateSelectedBook(updatedBook: IBook) {
       this.selectedBook = updatedBook;
     }
   }

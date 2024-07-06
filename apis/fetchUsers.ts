@@ -28,7 +28,21 @@ export const fetchUserById = async (userId: number) => {
     console.error(`Error fetching user with ID ${userId}:`, error);
     throw error;
   }
+
 };
+export const fetchUserByEmail = async (email: string) => {
+  try {
+    const response = await fetch(`${API_URL_USERS}/email/${email}`);
+    if(!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(`Error fetching user with email ${email}:`, error);
+    throw error;
+  }
+}
 
 export const persistUserInDatabase = async (newUser: IUser) => {
   try {
