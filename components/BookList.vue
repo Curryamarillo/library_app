@@ -24,13 +24,13 @@
     <BookModal :show="isModalOpen" @close="closeModal" @save="" />
     <BookForm :show="isFormOpen" @close="closeForm" @save="handleSaveBook" />
     <BookEditForm :show="isEditFormOpen" :book="selectedBook" @close="closeEditForm" @save="updatedBook" />
-    <BookDeleteModal :show="isDeteleModalOpen" :book="selectedBook" @close-delete-book="closeDeleteModal"/>
+    <BookDeleteModal :show="isDeteleModalOpen" :book="selectedBook" @close-delete-book="closeDeleteModal" @delete-book="handleDeleteBook" />
   </div>
 
 </template>
 
 <script setup lang="ts">
-import { fetchBooks, fetchBooksByTitleContaining, updateBook, persistBookInDatabase } from '@/apis/fetchBooks';
+import { fetchBooks, fetchBooksByTitleContaining, updateBook, persistBookInDatabase, deleteBook } from '@/apis/fetchBooks';
 import { type IBook } from '~/types/IBooks';
 
 const books:Ref<IBook[]> = ref<IBook[]>([]);
@@ -114,14 +114,23 @@ watch(searchTerm, async (newValue) => {
 
 const updatedBook = async (updatedBook: IBook) => {
   try {
-    await updateBook(updatedBook.id, updatedBook); // Pasa el libro completo
-    closeEditForm(); // Cierra el formulario de edición después de actualizar
-    await loadBooks(); // Vuelve a cargar la lista de libros después de la actualización
+    await updateBook(updatedBook.id, updatedBook);
+    closeEditForm(); 
+    await loadBooks(); 
   } catch (error) {
     console.error('Error updating book:', error);
-    // Puedes manejar errores aquí, por ejemplo, mostrando un mensaje al usuario
-  }
+    }
 };
+
+const handleDeleteBook = async (selectedBook: IBook) => {
+  try {
+    await deleteBook(selectedBook.id);
+    books.value = books.value.filter(book => book.id !== selectedBook.id);
+    closeDeleteModal();
+  } catch (error) {
+    console.error('Error deleting book', error)
+  }
+}
 
 
 </script>

@@ -6,7 +6,7 @@
     <div class="flex justify-end mt-auto">
       <button :class="buttonClass" :disabled="!isAvailable" @click="opcionPrestar">{{ availabilityText }}</button>
       <button :class="buttonClassEdit" :disabled="!isAvailable" @click="opcionEditar">Editar</button>
-      <button :class="buttonClassDelete" :disabled="!isAvailable" @click="opcionBorrar" >Borrar</button>
+      <button :class="buttonClassDelete" :disabled="!isAvailable" @click="opcionBorrar" >Eliminar</button>
     </div>
   </div>
 </template>
@@ -37,7 +37,7 @@ const props = defineProps({
 
 const emit = defineEmits(['open-modal', 'open-edit', 'open-delete']);
 
-const availabilityText = computed(() => (props.isAvailable ? 'Disponible' : 'No Disponible'));
+const availabilityText = computed(() => (props.isAvailable ? 'Disponible' : 'Prestado'));
 
 const buttonClass = computed(() =>
   props.isAvailable

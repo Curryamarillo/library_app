@@ -8,7 +8,7 @@
         <p class="text-gray-500">Fecha de préstamo: {{ formatDate(loan.loanDate) }}</p>
         <button class="bg-green-500 text-white px-4 py-1 mt-2 rounded-lg hover:bg-green-700 shadow-lg"
           @click="$emit('return')">
-          Prestar
+          Devolver
         </button>
       </div>
     </div>

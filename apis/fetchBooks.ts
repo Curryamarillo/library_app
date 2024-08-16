@@ -104,3 +104,17 @@ export const updateBook = async (bookId: number, updatedBook: IBook) => {
     throw error;
   }
 };
+
+export const deleteBook = async (bookId: number): Promise<void> => {
+  try {
+    const response = await fetch(`${API_URL_BOOKS}/${bookId}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) {
+      throw new Error('Failed to delete user');
+    }
+  } catch (error) {
+    console.error(`Error book user with id: ${bookId}:`, error);
+    throw new Error('Ocurrió un error al intentar eliminar el libro.');
+  }
+}
