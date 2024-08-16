@@ -4,19 +4,19 @@
       <h1 class="text-xl font-semibold mb-4">Editar Libro</h1>
       <div v-if="book">
         <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2" for="title">Título: {{ props.book?.title }}</label>
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="title">Título: {{ book?.title }}</label>
           <input id="title" type="text"
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             placeholder="Título" v-model="formData.title">
         </div>
         <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2" for="author">Autor: {{ props.book?.author }}</label>
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="author">Autor: {{ book?.author }}</label>
           <input id="author" type="text"
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             placeholder="Autor" v-model="formData.author">
         </div>
         <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2" for="isbn">ISBN: {{ props.book?.isbn }}</label>
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="isbn">ISBN: {{ book?.isbn }}</label>
           <input id="isbn" type="text"
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             placeholder="ISBN" v-model="formData.isbn">
@@ -37,6 +37,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref } from 'vue';
 import { type IBook } from '~/types/IBooks';
 
 const props = defineProps({
@@ -52,11 +53,11 @@ const props = defineProps({
 
 const emit = defineEmits(['close', 'save']);
 
-const formData = ref({
-  title: '',
-  author: '',
-  isbn: '',
-});
+const formData = computed(() => ({
+  title: props.book?.title || '',
+  author: props.book?.author || '',
+  isbn: props.book?.isbn || '',
+}));
 
 const saveChanges = () => {
   if (props.book) {
@@ -70,12 +71,6 @@ const saveChanges = () => {
 };
 
 const close = () => emit('close');
-
-if (props.book) {
-  formData.value.title = props.book.title;
-  formData.value.author = props.book.author;
-  formData.value.isbn = props.book.isbn;
-}
 </script>
 
 <style scoped>

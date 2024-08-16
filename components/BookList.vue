@@ -17,12 +17,14 @@
         :isAvailable="book.isAvailable"
         @open-modal="openModal"
         @open-edit="openEditForm(book)"
+        @open-delete="openDeleteModal(book)"
       />
     </template>
     <div v-else class="animate-ping">Cargando libros...</div>
     <BookModal :show="isModalOpen" @close="closeModal" @save="" />
     <BookForm :show="isFormOpen" @close="closeForm" @save="handleSaveBook" />
     <BookEditForm :show="isEditFormOpen" :book="selectedBook" @close="closeEditForm" @save="updatedBook" />
+    <BookDeleteModal :show="isDeteleModalOpen" :book="selectedBook" @close-delete-book="closeDeleteModal"/>
   </div>
 
 </template>
@@ -35,7 +37,7 @@ const books:Ref<IBook[]> = ref<IBook[]>([]);
 const isModalOpen = ref(false);
 const isEditFormOpen = ref(false);
 const selectedBook = ref<IBook | null>(null);
-
+const isDeteleModalOpen = ref(false);
 const searchTerm = ref('');
 const isFormOpen = ref(false);
 
@@ -84,6 +86,13 @@ const openEditForm = (book: IBook) => {
 const closeEditForm = () => {
   selectedBook.value = null;
   isEditFormOpen.value = false;
+};
+const openDeleteModal = (book: IBook) => {
+  selectedBook.value = book;
+  isDeteleModalOpen.value = true;
+};
+const closeDeleteModal = () => {
+  isDeteleModalOpen.value = false;
 };
 
 const handleSaveBook = async (newBook: IBook) => {
