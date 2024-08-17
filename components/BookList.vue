@@ -1,33 +1,37 @@
 <template>
-  <div class="relative grid sm:grid-cols-2 mt-20 grid-cols-1">
-    <button class="p-2 sm:p-1 my-2 mx-2 sm:mx-4 bg-green-500 text-white rounded shadow-lg hover:bg-green-700" @click="openForm">
-      Agregar Libro
-    </button>
-    <BookSearch v-model:search-term="searchTerm" />
-  </div>
-    <div class="grid grid-cols-1 mt-6">
-    <template v-if="books.length > 0">
-      <Book
-        v-for="(book, index) in books"
-        :key="index"
-        :id="book.id"
-        :title="book.title"
-        :author="book.author"
-        :isbn="book.isbn"
-        :isAvailable="book.isAvailable"
-        @open-modal="openModal"
-        @open-edit="openEditForm(book)"
-        @open-delete="openDeleteModal(book)"
-      />
-    </template>
-    <div v-else class="animate-ping">Cargando libros...</div>
+  <div class="flex flex-col h-screen">
+    <div class="bg-white p-8">
+      </div>
+    <div class="relative grid sm:grid-cols-2 grid-cols-1 p-4 bg-white z-10">
+      <button class="p-2 sm:p-1 my-2 mx-2 sm:mx-4 bg-green-500 text-white rounded shadow-lg hover:bg-green-700" @click="openForm">
+        Agregar Libro
+      </button>   
+      <BookSearch v-model:search-term="searchTerm" />
+    </div>
+    <div class="flex-grow overflow-y-auto p-4">
+      <template v-if="books.length > 0">
+        <Book
+          v-for="(book, index) in books"
+          :key="index"
+          :id="book.id"
+          :title="book.title"
+          :author="book.author"
+          :isbn="book.isbn"
+          :isAvailable="book.isAvailable"
+          @open-modal="openModal"
+          @open-edit="openEditForm(book)"
+          @open-delete="openDeleteModal(book)"
+        />
+      </template>
+      <div v-else class="animate-ping">Cargando libros...</div>
+    </div>
     <BookModal :show="isModalOpen" @close="closeModal" @save="" />
     <BookForm :show="isFormOpen" @close="closeForm" @save="handleSaveBook" />
     <BookEditForm :show="isEditFormOpen" :book="selectedBook" @close="closeEditForm" @save="updatedBook" />
     <BookDeleteModal :show="isDeteleModalOpen" :book="selectedBook" @close-delete-book="closeDeleteModal" @delete-book="handleDeleteBook" />
   </div>
-
 </template>
+
 
 <script setup lang="ts">
 import { fetchBooks, fetchBooksByTitleContaining, updateBook, persistBookInDatabase, deleteBook } from '@/apis/fetchBooks';

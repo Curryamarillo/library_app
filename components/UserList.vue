@@ -1,26 +1,36 @@
 <template>
-  <div class="grid grid-cols-1 mt-20">
-    <template v-if="users.length > 0">
-      <button class="p-2 my-2 mx-4 bg-green-500 text-white rounded shadow-lg hover:bg-green-700" @click="openForm">
-        Agregar Usuario
-      </button>
-      <User 
-        v-for="(user, index) in users" 
-        :key="index" 
-        :id="user.id" 
-        :name="user.name" 
-        :surname="user.surname"
-        :email="user.email" 
-        :is-admin="user.isAdmin"
-        @edit-user-form="openEditForm(user)"
-        @delete-user-form="openDeleteUserForm(user)" 
-      />
-    </template>
+  <div class="grid grid-cols-1 mt-20 relative">
+    <!-- Botón fijo en la parte superior -->
+    <button 
+      class="w-full py-2 my-2 bg-green-500 text-white rounded shadow-lg hover:bg-green-700 fixed top-20 left-4 z-20" 
+      @click="openForm">
+      Agregar Usuario
+    </button>
+
+    <!-- Contenedor que hace scroll -->
+    <div class="overflow-y-auto mt-12">
+      <template v-if="users.length > 0">
+        <User 
+          v-for="(user, index) in users" 
+          :key="index" 
+          :id="user.id" 
+          :name="user.name" 
+          :surname="user.surname"
+          :email="user.email" 
+          :is-admin="user.isAdmin"
+          @edit-user-form="openEditForm(user)"
+          @delete-user-form="openDeleteUserForm(user)" 
+        />
+      </template>
+    </div>
+
+    <!-- Modales -->
     <UserForm :show="isFormOpen" @close="closeForm" @save="handleSaveUser"/>
     <UserEditForm :show="isEditFormOpen" :user="selectedUser" @close="closeEditForm" @save="updatedUser"/>
-    <UserDeleteForm v-if="selectedUser"  :show="isUserDeleteFormOpen" :user="selectedUser"@close="closeDeleteUserForm" @delete="deleteUser" />
+    <UserDeleteForm v-if="selectedUser"  :show="isUserDeleteFormOpen" :user="selectedUser" @close="closeDeleteUserForm" @delete="deleteUser" />
   </div>
 </template>
+
 
 <script setup lang="ts">
 import { fetchUsers, persistUserInDatabase, updateUser, deleteUserById } from '~/apis/fetchUsers';
