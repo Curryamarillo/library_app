@@ -8,7 +8,17 @@
 </template>
 
 <script setup lang="ts">
-const userStore = useMyUserLoguedStore();
+const isLoggedIn = ref(false)
 
-const isLoggedIn = computed(() => userStore.user?.name)
+const checkLoginStatus = () => {
+    if (typeof window !== 'undefined') {
+        const token = localStorage.getItem('token');
+        isLoggedIn.value = !!token;
+    }
+}
+onMounted(() => {
+    checkLoginStatus();
+})
+
+
 </script>

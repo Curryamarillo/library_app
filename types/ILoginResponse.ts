@@ -1,4 +1,8 @@
 export interface ILoginResponse {
     email: string,
-    authenticated: boolean
+    message: string,
+    isAdmin: boolean,
+    isAuthenticated: boolean,
+    status: boolean,
+    jwt: string
 }

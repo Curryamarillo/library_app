@@ -36,10 +36,10 @@ const handleSubmit = async () => {
 
   try {
     const response = await fetchLogin(email.value, password.value);
-    if (response.authenticated) {
+    if (response.isAuthenticated) {
       console.log('Usuario autenticado:', response.email);
       await store.setUserByEmail(email.value);
-      console.log('Datos del usuario guardados en el store:', store.user);
+      console.log('Datos del usuario guardados en el store:' +  store.user?.email);
     } else {
       console.log('Autenticación fallida');
       alert('Email o contraseña incorrectos');

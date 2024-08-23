@@ -1,9 +1,11 @@
 import { type ILoginRequest } from "~/types/ILoginRequest";
 import { type ILoginResponse } from "~/types/ILoginResponse";
+import { fetchUserByEmail } from "./fetchUsers";
 
 const API_URL_AUTH = "http://localhost:8080/api/auth/login";
 
 export const fetchLogin = async (userEmail: string, userPassword: string): Promise<ILoginResponse> => {
+    
     const loginRequest: ILoginRequest = {
         email: userEmail,
         password: userPassword
@@ -32,6 +34,13 @@ export const fetchLogin = async (userEmail: string, userPassword: string): Promi
         const loginResponse: ILoginResponse = await response.json();
         console.log('Received response:', loginResponse); // Verificar la respuesta
 
+        localStorage.setItem('token', loginResponse.jwt);
+        localStorage.setItem('logguedUser', loginResponse.email);
+
+        const userData = await fetchUserByEmail(loginResponse.email);
+
+        localStorage.setItem('user', JSON.stringify({ name: userData.name, surname: userData.surname, isAdmin: userData.isAdmin }));
+        
         return loginResponse;
     } catch (error) {
         // Maneja errores de red u otros errores de fetch
