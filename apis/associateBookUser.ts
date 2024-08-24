@@ -18,15 +18,15 @@ const getHeaders = () => {
 }
 
 // Función para asociar un libro con un usuario
-export async function associateBookWithUser(id: number, userId: number) {
+export async function associateBookWithUser(userId: number, bookId: number) {
   try {
-    const response = await fetch(`${API_URL_BOOKS}/books/${id}`, {
-      method: 'PUT',
+    const response = await fetch(`${API_URL_BOOKS}/books/`, {
+      method: 'POST',
       headers: getHeaders(), // Añade las cabeceras con el token
-      body: JSON.stringify({ userId })
+      body: JSON.stringify({ userId, bookId })
     });
     if (!response.ok) {
-      throw new Error('Error al asociar el libro');
+      throw new Error('Error al asociar el libro: ${response.statusText}');
     }
     return await response.json();
   } catch (error) {

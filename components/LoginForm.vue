@@ -30,6 +30,7 @@ import { fetchLogin } from '~/apis/auth';
 const email = ref('');
 const password = ref('');
 const store = useMyUserLoguedStore();
+const emit = defineEmits(['login-success'])
 
 const handleSubmit = async () => {
   console.log('Attempting login with:', email.value, password.value); 
@@ -38,6 +39,7 @@ const handleSubmit = async () => {
     const response = await fetchLogin(email.value, password.value);
     if (response.isAuthenticated) {
       console.log('Usuario autenticado:', response.email);
+      emit('login-success')
       await store.setUserByEmail(email.value);
       console.log('Datos del usuario guardados en el store:' +  store.user?.email);
     } else {

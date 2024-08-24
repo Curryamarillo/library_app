@@ -37,7 +37,7 @@ const props = defineProps({
 
 const emit = defineEmits(['open-modal', 'open-edit', 'open-delete']);
 
-const availabilityText = computed(() => (props.isAvailable ? 'Disponible' : 'Prestado'));
+const availabilityText = computed(() => (props.isAvailable ? 'Prestar' : 'Prestado'));
 
 const buttonClass = computed(() =>
   props.isAvailable
