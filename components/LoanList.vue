@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-cols-1 mt-20">
+  <div class="grid grid-cols-1 pt-24">
     <template v-if="loans.length > 0">
       <Loan v-for="loan in loans" :key="loan.id" :loan="loan" @return="openReturnModal(loan.id)" />
     </template>

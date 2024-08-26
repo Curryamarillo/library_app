@@ -1,8 +1,8 @@
 <template>
-  <div class="m-4 border">
+  <div class="m-4 rounded-md border">
     <div class="p-4 border rounded-md shadow-lg bg-white flex flex-col">
       <h1>Id: {{ id }}</h1>
-      <h2 class="text-l font-bold"> {{ name }} {{ surname }}</h2>
+      <h2 class="text-xl font-bold"> {{ name }} {{ surname }}</h2>
       <h4 class="text-gray-500 hidden md:block">Correo Electrónico: {{ email }}</h4>
       <h4>Es Administrador: {{ isAdminText }}</h4>
       <div class="flex gap-2 mt-2">

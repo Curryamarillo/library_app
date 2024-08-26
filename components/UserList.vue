@@ -1,8 +1,8 @@
 <template>
-  <div class="grid grid-cols-1 mt-20 relative">
+  <div class="grid grid-cols-1 pt-28 relative">
     <!-- Botón fijo en la parte superior -->
     <button 
-      class="w-full py-2 my-2 bg-green-500 text-white rounded shadow-lg hover:bg-green-700 fixed top-20 left-4 z-20" 
+      class="w-full py-2 my-6 bg-green-500 text-white rounded-md shadow-lg hover:bg-green-700 fixed top-20 left-4" 
       @click="openForm">
       Agregar Usuario
     </button>

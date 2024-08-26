@@ -1,34 +1,27 @@
 <template>
   <div class="flex flex-col h-screen">
-    <div class="bg-white p-8">
-      </div>
-    <div class="relative grid sm:grid-cols-2 grid-cols-1 p-4 bg-white z-10">
-      <button class="p-2 sm:p-1 my-2 mx-2 sm:mx-4 bg-green-500 text-white rounded shadow-lg hover:bg-green-700" @click="openForm">
+    <div class="bg-green-900 pt-20">
+    </div>
+    <div class="relative grid mx-4 sm:grid-cols-2 grid-cols-1 pt-5 bg-green-900">
+      <button class="p-4 sm:p-1 my-2 mx-2 sm:mx-4 bg-green-500 text-white rounded shadow-lg hover:bg-green-700"
+        @click="openForm">
         Agregar Libro
-      </button>   
+      </button>
       <BookSearch v-model:search-term="searchTerm" />
     </div>
     <div class="flex-grow overflow-y-auto p-4">
       <template v-if="books.length > 0">
-        <Book
-          v-for="(book, index) in books"
-          :key="index"
-          :id="book.id"
-          :title="book.title"
-          :author="book.author"
-          :isbn="book.isbn"
-          :isAvailable="book.isAvailable"
-          @open-modal="openModal"
-          @open-edit="openEditForm(book)"
-          @open-delete="openDeleteModal(book)"
-        />
+        <Book v-for="(book, index) in books" :key="index" :id="book.id" :title="book.title" :author="book.author"
+          :isbn="book.isbn" :isAvailable="book.isAvailable" @open-modal="openModal" @open-edit="openEditForm(book)"
+          @open-delete="openDeleteModal(book)" />
       </template>
       <div v-else class="animate-ping">Cargando libros...</div>
     </div>
     <BookModal :show="isModalOpen" :book="selectedBook" @close="closeModal" @save="handleLoanBook" />
     <BookForm :show="isFormOpen" @close="closeForm" @save="handleSaveBook" />
     <BookEditForm :show="isEditFormOpen" :book="selectedBook" @close="closeEditForm" @save="updatedBook" />
-    <BookDeleteModal :show="isDeteleModalOpen" :book="selectedBook" @close-delete-book="closeDeleteModal" @delete-book="handleDeleteBook" />
+    <BookDeleteModal :show="isDeteleModalOpen" :book="selectedBook" @close-delete-book="closeDeleteModal"
+      @delete-book="handleDeleteBook" />
   </div>
 </template>
 
@@ -38,10 +31,9 @@ import { fetchBooks, fetchBooksByTitleContaining, updateBook, persistBookInDatab
 import { associateBookWithUser } from '~/apis/associateBookUser';
 import { fetchUserByEmail } from '~/apis/fetchUsers';
 import { type IBook } from '~/types/IBooks';
-import type { ILoan } from '~/types/ILoan';
 
 
-const books:Ref<IBook[]> = ref<IBook[]>([]);
+const books: Ref<IBook[]> = ref<IBook[]>([]);
 const isModalOpen = ref(false);
 const isEditFormOpen = ref(false);
 const selectedBook = ref<IBook | null>(null);
@@ -49,16 +41,16 @@ const isDeteleModalOpen = ref(false);
 const searchTerm = ref('');
 const isFormOpen = ref(false);
 
-const loadUser = async (): Promise<number |null> => {
+const loadUser = async (): Promise<number | null> => {
   const userEmail = localStorage.getItem('logguedUser');
-  if(!userEmail) {
+  if (!userEmail) {
     console.error('No se encontró el email del usuario en localStorage.');
     return null;
   }
 
   try {
     const response = await fetchUserByEmail(userEmail);
-    const { id: userId} = response;
+    const { id: userId } = response;
     return userId;
   } catch (error) {
     console.error('Error fetching userByEmail', error);
@@ -167,11 +159,11 @@ watch(searchTerm, async (newValue) => {
 const updatedBook = async (updatedBook: IBook) => {
   try {
     await updateBook(updatedBook.id, updatedBook);
-    closeEditForm(); 
-    await loadBooks(); 
+    closeEditForm();
+    await loadBooks();
   } catch (error) {
     console.error('Error updating book:', error);
-    }
+  }
 };
 
 const handleDeleteBook = async (selectedBook: IBook) => {
@@ -190,4 +182,3 @@ const handleDeleteBook = async (selectedBook: IBook) => {
 <style scoped>
 /* Estilos específicos del componente BookList.vue */
 </style>
-

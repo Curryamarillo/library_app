@@ -1,27 +1,26 @@
 <template>
     <div class="grid bg-green-900 sm:grid-cols-2 grid-cols-1">
-        <img class="rounded-md mt-24 ml-2 shadow-md max-w-sm max-h-sm sm:block hidden"
-            src="../assets/libro-verde.jpg" alt="libros">
-        <LoginForm v-if="!isLoggedIn" @login-success="handleLoginSuccess"/>
-        <LogguedComponent v-else/>
+      <img class="rounded-md mt-24 ml-2 shadow-md max-w-sm max-h-sm sm:block hidden" src="../assets/libro-verde.jpg" alt="libros">
+      <LoginForm v-if="!isLoggedIn" @login-success="handleLoginSuccess"/>
+      <LogguedComponent v-else/>
     </div>
-</template>
+  </template>
+  
+  <script setup lang="ts">
+  import { onMounted, ref } from 'vue';
 
-<script setup lang="ts">
-const isLoggedIn = ref(false)
+  
+  const userStore = useMyUserLoguedStore();
+ const isLoggedIn = computed(() => userStore.isLoggedIn);
+  
+  const handleLoginSuccess = () => {
+    userStore.checkLoginStatus; 
+    
 
-const checkLoginStatus = () => {
-    if (typeof window !== 'undefined') {
-        const token = localStorage.getItem('token');
-        isLoggedIn.value = !!token;
-    }
-}
-const handleLoginSuccess = () => {
-    isLoggedIn.value = true
-}
-onMounted(() => {
-    checkLoginStatus();
-})
-
-
-</script>
+  };
+  
+  onMounted(() => {
+    userStore.checkLoginStatus(); 
+  });
+  </script>
+  
