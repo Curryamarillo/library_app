@@ -15,10 +15,12 @@ import { fetchLoans } from '@/apis/fetchLoans';
 import { fetchUserById } from '@/apis/fetchUsers';
 import { fetchBookById } from '@/apis/fetchBooks';
 import { type ILoan } from '~/types/ILoan';
+import { fetchLoansByUserId } from '@/apis/fetchLoans';
 
 const loans = ref<ILoan[]>([]);
 const isReturnModalOpen = ref(false);
 const selectedLoanId = ref<number | null>(null);
+const loansByUserId = ref<ILoan[]>([]);
 
 onMounted(async () => {
   try {

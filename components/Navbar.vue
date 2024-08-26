@@ -120,6 +120,7 @@ export default defineComponent({
     const mobileMenuOpen = ref(false);
     const profileMenuOpen = ref(false);
     const isLoggedIn = ref(false);
+    const isAdmin = ref(false);
 
 
     
