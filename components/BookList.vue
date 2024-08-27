@@ -12,7 +12,7 @@
     <div class="flex-grow overflow-y-auto p-4">
       <template v-if="books.length > 0">
         <Book v-for="(book, index) in books" :key="index" :id="book.id" :title="book.title" :author="book.author"
-          :isbn="book.isbn" :isAvailable="book.isAvailable" @open-modal="openModal" @open-edit="openEditForm(book)"
+          :isbn="book.isbn" :isAvailable="book.isAvailable" @open-modal="openModal(book)" @open-edit="openEditForm(book)"
           @open-delete="openDeleteModal(book)" />
       </template>
       <div v-else class="animate-ping">Cargando libros...</div>
@@ -89,6 +89,7 @@ const closeForm = () => {
 const openModal = (book: IBook) => {
   selectedBook.value = book;
   isModalOpen.value = true;
+  console.log("Valor que se pasa al modal en OpenModal " +selectedBook.value);
 };
 
 const closeModal = () => {
@@ -130,19 +131,15 @@ const handleLoanBook = async (bookId: number) => {
       throw new Error('No se pudo obtener el ID del usuario.');
     }
 
-    // Verifica que selectedBook esté definido
-    if (!selectedBook.value) {
+    if (!selectedBook.value?.id) {
       throw new Error('No se encontró el libro seleccionado.');
     }
 
-    // Asociar el libro con el usuario
     await associateBookWithUser(userId, bookId);
 
-    // Actualiza el estado del libro para reflejar que ya no está disponible
     const updatedBook = { ...selectedBook.value, isAvailable: false };
-    await updateBook(updatedBook.id!, updatedBook); // Usar '!' para indicar que id no es undefined
+    await updateBook(updatedBook.id!, updatedBook); 
 
-    // Recargar la lista de libros
     await loadBooks();
     closeModal();
   } catch (error) {

@@ -36,7 +36,7 @@ export const fetchLoans = async () => {
 
 export const fetchLoansByUserId = async (userId: number) => {
   try {
-    const response = await fetch(`${API_URL_LOANS}/${userId}`, {
+    const response = await fetch(`${API_URL_LOANS}/user/${userId}`, {
       headers: getHeaders(),
     });
     if (!response.ok) {

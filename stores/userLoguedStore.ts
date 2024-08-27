@@ -11,7 +11,7 @@ export const useMyUserLoguedStore = defineStore({
   actions: {
     async setUserByEmail(email: string) {
       try {
-        const userData = await fetchUserByEmail(email);
+        const userData: IUser = await fetchUserByEmail(email);
         this.user = userData;
         this.isLoggedIn = true; 
       } catch (error) {

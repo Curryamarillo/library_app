@@ -1,4 +1,5 @@
 const API_URL_BOOKS: string = "http://localhost:8080/books";
+const API_URL_ASSOCIATE_BOOK_USER: string = "http://localhost:8080/loans/create"
 
 // Función para obtener el token de autenticación
 const getAuthToken = () => {
@@ -20,7 +21,7 @@ const getHeaders = () => {
 // Función para asociar un libro con un usuario
 export async function associateBookWithUser(userId: number, bookId: number) {
   try {
-    const response = await fetch(`${API_URL_BOOKS}/books/`, {
+    const response = await fetch(`${API_URL_ASSOCIATE_BOOK_USER}/`, {
       method: 'POST',
       headers: getHeaders(), // Añade las cabeceras con el token
       body: JSON.stringify({ userId, bookId })
