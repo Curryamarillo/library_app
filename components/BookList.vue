@@ -17,7 +17,15 @@
       </template>
       <div v-else class="animate-ping">Cargando libros...</div>
     </div>
-    <BookModal :show="isModalOpen" :book="selectedBook" @close="closeModal" @save="handleLoanBook" />
+    <!-- Se pasa bookId y bookName solo si selectedBook está definido -->
+    <BookModal 
+      v-if="selectedBook"
+      :show="isModalOpen" 
+      :book-id="selectedBook?.id!" 
+      :book-name="selectedBook?.title!" 
+      @close="closeModal" 
+      @save="handleLoanBook(selectedBook?.id!)" 
+    />
     <BookForm :show="isFormOpen" @close="closeForm" @save="handleSaveBook" />
     <BookEditForm :show="isEditFormOpen" :book="selectedBook" @close="closeEditForm" @save="updatedBook" />
     <BookDeleteModal :show="isDeteleModalOpen" :book="selectedBook" @close-delete-book="closeDeleteModal"
@@ -25,12 +33,10 @@
   </div>
 </template>
 
-
 <script setup lang="ts">
 import { fetchBooks, fetchBooksByTitleContaining, updateBook, persistBookInDatabase, deleteBook } from '@/apis/fetchBooks';
 import { associateBookWithUser } from '~/apis/associateBookUser';
 import { type IBook } from '~/types/IBooks';
-
 
 const books: Ref<IBook[]> = ref<IBook[]>([]);
 const isModalOpen = ref(false);
@@ -76,8 +82,8 @@ const openModal = (book: IBook) => {
 
 const closeModal = () => {
   isModalOpen.value = false;
+  selectedBook.value = null;  // Restablece el libro seleccionado al cerrar el modal
 };
-
 
 const openEditForm = (book: IBook) => {
   selectedBook.value = book;
@@ -88,10 +94,12 @@ const closeEditForm = () => {
   selectedBook.value = null;
   isEditFormOpen.value = false;
 };
+
 const openDeleteModal = (book: IBook) => {
   selectedBook.value = book;
   isDeteleModalOpen.value = true;
 };
+
 const closeDeleteModal = () => {
   isDeteleModalOpen.value = false;
 };
@@ -106,26 +114,23 @@ const handleSaveBook = async (newBook: IBook) => {
   }
 };
 
-
-const handleLoanBook = async (selectedBook: IBook, logguedUser: string) => {
+const handleLoanBook = async (bookId: number) => {
   try {
     const user = localStorage.getItem('user');
     if (!user) {
-      console.error("User not found at localStorage")
+      console.error("User not found in localStorage");
       return;
     }
     const userObject = JSON.parse(user);
-    console.log ("User id " + userObject.id);
-    console.log("Id del libro: " + selectedBook.id)
+    console.log("User ID: " + userObject.id);
+    console.log("Book ID: " + bookId);
 
-    await associateBookWithUser(userObject.id, selectedBook.id);
-    selectedBook.isAvailable = false;
+    await associateBookWithUser(userObject.id, bookId);
+    selectedBook.value!.isAvailable = false;
     await loadBooks();
     closeModal();
-
-
-  } catch (error){
-    console.error("Error at loan books association")
+  } catch (error) {
+    console.error("Error in book loan association", error);
   }
 };
 
@@ -151,11 +156,9 @@ const handleDeleteBook = async (selectedBook: IBook) => {
     books.value = books.value.filter(book => book.id !== selectedBook.id);
     closeDeleteModal();
   } catch (error) {
-    console.error('Error deleting book', error)
+    console.error('Error deleting book', error);
   }
 }
-
-
 </script>
 
 <style scoped>
