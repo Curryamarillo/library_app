@@ -105,6 +105,8 @@ const handleSaveBook = async (newBook: IBook) => {
     console.error('Error saving book:', error);
   }
 };
+
+
 const handleLoanBook = async (selectedBook: IBook, logguedUser: string) => {
   try {
     const user = localStorage.getItem('user');
@@ -117,7 +119,6 @@ const handleLoanBook = async (selectedBook: IBook, logguedUser: string) => {
     console.log("Id del libro: " + selectedBook.id)
 
     await associateBookWithUser(userObject.id, selectedBook.id);
-    // TODO associate book with id and set book isAvailable
     selectedBook.isAvailable = false;
     await loadBooks();
     closeModal();
