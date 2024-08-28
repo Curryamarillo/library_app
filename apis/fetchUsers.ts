@@ -60,7 +60,8 @@ export const fetchUserByEmail = async (email: string) => {
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
-    const data = await response.json();
+    const data: IUser = await response.json();
+
     return data;
   } catch (error) {
     console.error(`Error fetching user with email ${email}:`, error);

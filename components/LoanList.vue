@@ -9,13 +9,12 @@
       </template>
     </template>
     <div v-else class="animate-ping">Cargando préstamos...</div>
-    <BookModal v-if="isReturnModalOpen" :show="isReturnModalOpen" :loan-id="selectedLoanId" @close="closeReturnModal"
+    <BookModal v-if="isReturnModalOpen" :show="isReturnModalOpen" :bookName="bookName" :loan-id="selectedLoanId" @close="closeReturnModal"
       @return-book="handleReturnBook" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
 import { fetchLoans } from '@/apis/fetchLoans';
 import { fetchUserById } from '@/apis/fetchUsers';
 import { fetchBookById } from '@/apis/fetchBooks';
@@ -27,6 +26,7 @@ const loans = ref<ILoan[]>([]);
 const isReturnModalOpen = ref(false);
 const selectedLoanId = ref<number | null>(null);
 const userAtStore = useMyUserLoguedStore();
+const bookName = ref('');
 
 const filteredLoansForUser = computed(() => {
   const user = userAtStore.user;
@@ -87,6 +87,20 @@ onMounted(async () => {
 
 function openReturnModal(loanId: number) {
   selectedLoanId.value = loanId;
+
+  const selectedLoan = loans.value.find(loan => loan.id == loanId);
+
+  if(selectedLoan) {
+    bookName.value = selectedLoan.book.title;
+    console.log("BookName: " + bookName.value)
+  } else {
+    console.error("Loan not found for the given id: " + loanId)
+    return;
+  }
+
+
+  console.log("ID LOAN: " + loanId);
+  console.log("Book name: " + bookName.value);
   isReturnModalOpen.value = true;
 }
 
@@ -95,6 +109,7 @@ function closeReturnModal() {
 }
 
 function handleReturnBook() {
-  closeReturnModal();
+// TODO 
+
 }
 </script>

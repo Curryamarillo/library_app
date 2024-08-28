@@ -39,11 +39,10 @@ export const fetchLogin = async (userEmail: string, userPassword: string): Promi
 
         const userData = await fetchUserByEmail(loginResponse.email);
 
-        localStorage.setItem('user', JSON.stringify({ name: userData.name, surname: userData.surname, isAdmin: userData.isAdmin }));
-        
+        localStorage.setItem('user', JSON.stringify({ id: userData.id, name: userData.name, surname: userData.surname, isAdmin: userData.isAdmin }));
+
         return loginResponse;
     } catch (error) {
-        // Maneja errores de red u otros errores de fetch
         console.error('Network or server error:', error); // Verificar errores de red o de servidor
         return Promise.reject(new Error('Error de red o de servidor'));
     }

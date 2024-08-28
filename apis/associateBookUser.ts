@@ -21,9 +21,9 @@ const getHeaders = () => {
 // Función para asociar un libro con un usuario
 export async function associateBookWithUser(userId: number, bookId: number) {
   try {
-    const response = await fetch(`${API_URL_ASSOCIATE_BOOK_USER}/`, {
+    const response = await fetch(`${API_URL_ASSOCIATE_BOOK_USER}`, {
       method: 'POST',
-      headers: getHeaders(), // Añade las cabeceras con el token
+      headers: getHeaders(),
       body: JSON.stringify({ userId, bookId })
     });
     if (!response.ok) {

@@ -12,8 +12,8 @@
     <div class="flex-grow overflow-y-auto p-4">
       <template v-if="books.length > 0">
         <Book v-for="(book, index) in books" :key="index" :id="book.id" :title="book.title" :author="book.author"
-          :isbn="book.isbn" :isAvailable="book.isAvailable" @open-modal="openModal(book)" @open-edit="openEditForm(book)"
-          @open-delete="openDeleteModal(book)" />
+          :isbn="book.isbn" :isAvailable="book.isAvailable" @open-modal="openModal(book)"
+          @open-edit="openEditForm(book)" @open-delete="openDeleteModal(book)" />
       </template>
       <div v-else class="animate-ping">Cargando libros...</div>
     </div>
@@ -29,7 +29,6 @@
 <script setup lang="ts">
 import { fetchBooks, fetchBooksByTitleContaining, updateBook, persistBookInDatabase, deleteBook } from '@/apis/fetchBooks';
 import { associateBookWithUser } from '~/apis/associateBookUser';
-import { fetchUserByEmail } from '~/apis/fetchUsers';
 import { type IBook } from '~/types/IBooks';
 
 
@@ -40,23 +39,6 @@ const selectedBook = ref<IBook | null>(null);
 const isDeteleModalOpen = ref(false);
 const searchTerm = ref('');
 const isFormOpen = ref(false);
-
-const loadUser = async (): Promise<number | null> => {
-  const userEmail = localStorage.getItem('logguedUser');
-  if (!userEmail) {
-    console.error('No se encontró el email del usuario en localStorage.');
-    return null;
-  }
-
-  try {
-    const response = await fetchUserByEmail(userEmail);
-    const { id: userId } = response;
-    return userId;
-  } catch (error) {
-    console.error('Error fetching userByEmail', error);
-    return null;
-  }
-}
 
 const loadBooks = async () => {
   try {
@@ -89,7 +71,7 @@ const closeForm = () => {
 const openModal = (book: IBook) => {
   selectedBook.value = book;
   isModalOpen.value = true;
-  console.log("Valor que se pasa al modal en OpenModal " +selectedBook.value);
+  console.log("Valor que se pasa al modal en OpenModal " + JSON.stringify(selectedBook.value));
 };
 
 const closeModal = () => {
@@ -123,27 +105,26 @@ const handleSaveBook = async (newBook: IBook) => {
     console.error('Error saving book:', error);
   }
 };
-const handleLoanBook = async (bookId: number) => {
+const handleLoanBook = async (selectedBook: IBook, logguedUser: string) => {
   try {
-    const userId = await loadUser();
-
-    if (!userId) {
-      throw new Error('No se pudo obtener el ID del usuario.');
+    const user = localStorage.getItem('user');
+    if (!user) {
+      console.error("User not found at localStorage")
+      return;
     }
+    const userObject = JSON.parse(user);
+    console.log ("User id " + userObject.id);
+    console.log("Id del libro: " + selectedBook.id)
 
-    if (!selectedBook.value?.id) {
-      throw new Error('No se encontró el libro seleccionado.');
-    }
-
-    await associateBookWithUser(userId, bookId);
-
-    const updatedBook = { ...selectedBook.value, isAvailable: false };
-    await updateBook(updatedBook.id!, updatedBook); 
-
+    await associateBookWithUser(userObject.id, selectedBook.id);
+    // TODO associate book with id and set book isAvailable
+    selectedBook.isAvailable = false;
     await loadBooks();
     closeModal();
-  } catch (error) {
-    console.error('Error al realizar el préstamo del libro:', error);
+
+
+  } catch (error){
+    console.error("Error at loan books association")
   }
 };
 
